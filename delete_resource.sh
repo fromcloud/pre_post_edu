@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [ $# -lt 1 ]
+then
+	echo "$0 <apikey file>"
+	exit
+fi
+
 cli=cloudmonkey
 tmp=/tmp/tempfile
 cat $1 |
@@ -18,11 +24,11 @@ do
 	done
 
 	echo "destroy vm -- $id"
+	$cli set profile server
 	$cli listVirtualMachines filter=id | grep id | awk '{print $2}' | tr -d '\"' > $tmp
 	cat $tmp |
 	while read vmid
 	do
-		$cli set profile server
 		echo "destroy vm -- $id $vmid "
 		$cli stopVirtualMachine id=$vmid
 		$cli destroyVirtualMachine id=$vmid
@@ -38,7 +44,7 @@ do
 	done
 
 	echo "destory pf -- $id"
-    $cli listPortForwardingRules filter=id | grep id | awk '{print$2}' | tr -d '\"' > $tmp
+    	$cli listPortForwardingRules filter=id | grep id | awk '{print$2}' | tr -d '\"' > $tmp
 	cat $tmp |
 	while read pfid
 	do
@@ -48,7 +54,7 @@ do
 
 
 	echo "destory fw -- $id"
-    $cli listFirewallRules filter=id | grep id | awk '{print$2}' | tr -d '\"' > $tmp
+    	$cli listFirewallRules filter=id | grep id | awk '{print$2}' | tr -d '\"' > $tmp
 	cat $tmp |
 	while read fwid
 	do
