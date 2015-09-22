@@ -24,6 +24,7 @@ secretkey = $2
 timeout = 3600
 password = password
 verifysslcert = true
+signatureversion = 2
 
 [server]
 domain = /
@@ -35,6 +36,7 @@ secretkey = $2
 timeout = 3600
 password = password
 verifysslcert = true
+signatureversion = 2
 
 [waf]
 domain = /
@@ -46,6 +48,7 @@ secretkey = $2
 timeout = 3600
 password = password
 verifysslcert = true
+signatureversion = 2
 
 [nas]
 domain = /
@@ -57,6 +60,7 @@ secretkey = $2
 timeout = 3600
 password = password
 verifysslcert = true
+signatureversion = 2
 
 [watch]
 domain = /
@@ -68,6 +72,7 @@ secretkey = $2
 timeout = 3600
 password = password
 verifysslcert = true
+signatureversion = 2
 
 [package]
 domain = /
@@ -79,6 +84,7 @@ secretkey = $2
 timeout = 3600
 password = password
 verifysslcert = true
+signatureversion = 2
 
 
 [message]
@@ -91,6 +97,7 @@ secretkey = $2
 timeout = 3600
 password = password
 verifysslcert = true
+signatureversion = 2
 
 
 [autoscaling]
@@ -103,6 +110,7 @@ secretkey = $2
 timeout = 3600
 password = password
 verifysslcert = true
+signatureversion = 2
 
 
 [db]
@@ -115,6 +123,7 @@ secretkey = $2
 timeout = 3600
 password = password
 verifysslcert = true
+signatureversion = 2
 
 [cdn]
 domain = /
@@ -126,6 +135,18 @@ secretkey = $2
 timeout = 3600
 password = password
 verifysslcert = true
+signatureversion = 2
 
+[gslb]
+domain = /
+username = admin
+apikey = $1
+url = https://api.ucloudbiz.olleh.com/gslb/v1/client/api
+expires = 600
+secretkey = $2
+timeout = 3600
+password = password
+verifysslcert = true
+signatureversion = 2
 
 EOL
