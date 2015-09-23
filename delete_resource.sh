@@ -13,25 +13,14 @@ while read id apikey secret swift
 do
 	./set_cloudmonkey.sh $apikey $secret
 
-	echo "destory waf -- $id"
-	$cli set profile waf
-	$cli listWAFs filter=id | grep id | awk '{print$2}' | tr -d '\"' > $tmp
-	cat $tmp |
-	while read wafid
-	do
-		echo "destory waf -- $id $wafid"
-		$cli deleteWAF id=$wafid
-	done
-
-	echo "destroy vm -- $id"
+	echo "stop vm -- $id"
 	$cli set profile server
 	$cli listVirtualMachines filter=id | grep id | awk '{print $2}' | tr -d '\"' > $tmp
 	cat $tmp |
 	while read vmid
 	do
-		echo "destroy vm -- $id $vmid "
+		echo "stop vm -- $id $vmid "
 		$cli stopVirtualMachine id=$vmid
-		$cli destroyVirtualMachine id=$vmid
 	done
 
 	echo "destory ip -- $id"
@@ -110,6 +99,35 @@ do
 		$cli deleteVolume id=$nasid
 	done
 
+    echo "destory network -- $id"
+    $cli set profile server
+    $cli listNetworks filter=id | grep id | awk '{print$2}' | tr -d '\"' > $tmp 
+    cat $tmp |
+    while read networkid
+    do
+        echo "destory network -- $id $networkid"
+        $cli deleteNetwork id=$networkid
+    done
+
+	echo "destory waf -- $id"
+	$cli set profile waf
+	$cli listWAFs filter=id | grep id | awk '{print$2}' | tr -d '\"' > $tmp
+	cat $tmp |
+	while read wafid
+	do
+		echo "destory waf -- $id $wafid"
+		$cli deleteWAF id=$wafid
+	done
+
+	echo "destroy vm -- $id"
+	$cli set profile server
+	$cli listVirtualMachines filter=id | grep id | awk '{print $2}' | tr -d '\"' > $tmp
+	cat $tmp |
+	while read vmid
+	do
+		echo "destroy vm -- $id $vmid "
+		$cli destroyVirtualMachine id=$vmid
+	done
 
 	echo "destory swift -- $id"
 	./delete_swift.sh $id $swift
