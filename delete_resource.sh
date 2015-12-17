@@ -126,7 +126,7 @@ do
 	while read vmid
 	do
 		echo "destroy vm -- $id $vmid "
-		$cli destroyVirtualMachine id=$vmid
+		$cli destroyVirtualMachine expunge=true id=$vmid
 	done
 
 	echo "destory swift -- $id"
