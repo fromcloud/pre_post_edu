@@ -129,6 +129,40 @@ do
 		$cli destroyVirtualMachine expunge=true id=$vmid
 	done
 
+	echo "destroy cdn -- $id"
+    $cli set profile cdn
+    $cli listVirtualMachines filter=id | grep id | awk '{print $2}' | tr -d '\"' > $tmp
+    cat $tmp |
+    while read vmid
+    do
+        echo "destroy vm -- $id $vmid "
+        $cli destroyVirtualMachine expunge=true id=$vmid
+    done
+
+	$cli set disply json
+	$cli set profile gslb
+	$cli listGslbService filter=svrnm| grep svrnm | awk '{print $2}' | tr -d '\"' > /tmp/a
+	$cli listGslbService filter=ip | grep ip | awk '{print $2}' | tr -d '\"' > /tmp/b
+	$cli listGslbService filter=port| grep port| awk '{print $2}' | tr -d '\"' > /tmp/c
+	paste /tmp/a /tmp/b /tmp/c > $tmp
+	cat $tmp |
+	while read svrnm ip port
+	do
+    	gslbid=${svrnm}_${ip}_${port}
+    	echo "delete gslb service -- $id $gslbid"
+    	$cli deleteGslbService gslbsvcIpName=$gslbid
+	done
+
+
+	$cli listGslbServer | grep svrnm | awk '{print $2}' | tr -d '\"' | tr -d '\,' > $tmp
+	cat $tmp |
+	while read svrnm
+	do
+    	echo "delete gslb server -- $id $svrnm"
+    	$cli deleteGslbServer svrnm=$svrnm
+	done
+
+
 	echo "destory swift -- $id"
 	./delete_swift.sh $id $swift
 done
